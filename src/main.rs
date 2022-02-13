@@ -1,6 +1,7 @@
 extern crate chrono;
 
 use std::env;
+use std::time;
 use chrono::prelude::*;
 
 struct Response {
@@ -36,7 +37,14 @@ fn get_date(from: &str) -> Result<Response, bool> {
 fn main() {
     let args = env::args();
     if args.len() < 2 {
-        println!("I refuse to work without an argument");
+        match time::SystemTime::now().duration_since(time::SystemTime::UNIX_EPOCH) {
+            Ok(n) => {
+                println!("Current: {}", n.as_millis());
+            },
+            Err(err) => {
+                println!("Cannot obtain current timestamp {}", err);
+            }
+        }
         return;
     }
     let input = args.last().unwrap();
