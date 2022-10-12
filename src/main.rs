@@ -20,7 +20,12 @@ impl Response {
 
 fn get_date(from: &str) -> Result<Response, bool> {
     let requested_time : i64 ;
-    if let Ok(value) = from.parse::<i64>() {
+    let actual_time = if from.len() == 10 {
+        format!("{}000", from)
+    } else {
+        from.to_string()
+    };
+    if let Ok(value) = actual_time.parse::<i64>() {
         requested_time = value;
     } else {
         return Err(false);
